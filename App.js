@@ -12,9 +12,10 @@ import {
 import AppButton from "./app/components/AppButton";
 import LandingScreen from "./app/screens/LandingScreen";
 import LoginScreen from "./app/screens/LoginScreen";
+import SignUpScreen from "./app/screens/SignUpScreen";
 
 export default function App() {
-  return <LoginScreen />;
+  return <SignUpScreen />;
 }
 
 const styles = StyleSheet.create({});

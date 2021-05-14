@@ -21,7 +21,7 @@ const loginInitialValues = {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(8).label("Password"),
+  password: Yup.string().required().label("Password"),
 });
 
 export default function LoginScreen() {
@@ -71,7 +71,12 @@ export default function LoginScreen() {
                 {errors.password && touched.password && (
                   <Text style={styles.error}>{errors.password}</Text>
                 )}
-                <AppButton title="Sign In" onPress={handleSubmit} />
+                <AppButton
+                  title="Sign In"
+                  onPress={(values) => {
+                    handleSubmit(values);
+                  }}
+                />
               </>
             )}
           </Formik>
