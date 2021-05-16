@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Platform,
   StatusBar,
+  Image,
+  ScrollView,
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
@@ -16,6 +18,7 @@ import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import AppSelector from "../components/AppSelector";
+import IdVerification from "../components/IdVerification";
 
 const stepper = ["Information", "ID Verification", "Finished"];
 const formInitialValue = {
@@ -29,6 +32,7 @@ const formInitialValue = {
 
 export default function SignUpScreen() {
   const [step, setStep] = useState(0);
+  const [imageUri, setImageUri] = useState();
 
   const handleNextButton = () => {
     if (step > 2) return;
@@ -51,25 +55,18 @@ export default function SignUpScreen() {
       .label("Phone number"),
   });
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.backToHomeContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => {}}>
-          <MaterialIcons name="arrow-back" size={25} color="#000" />
-        </TouchableOpacity>
-        <View style={styles.centerElement}>
-          <Text style={styles.homeText}>Home</Text>
-        </View>
-      </View>
-      <View style={styles.stepperContainer}>
-        <StepperSingup stepperArray={stepper} currentStep={step} />
-        <View style={styles.stepperConnector} />
-      </View>
-      <View style={styles.form}>
+  const handleSetIdImage = (image) => {
+    setImageUri(image);
+  };
+
+  const renderStepContent = () => {
+    if (step === 0)
+      return (
         <Formik
           initialValues={formInitialValue}
-          onSubmit={(values) => {
+          onSubmit={(values, formikBag) => {
             console.log(values);
+            handleNextButton();
           }}
           validationSchema={validationSchema}
         >
@@ -126,7 +123,7 @@ export default function SignUpScreen() {
               )}
               <AppTextInput
                 placeholder="Phone Number"
-                icon="account"
+                icon="phone"
                 onChangeText={handleChange("phonenumber")}
                 style={{ width: "100%" }}
                 onBlur={() => setFieldTouched("phonenumber")}
@@ -147,7 +144,6 @@ export default function SignUpScreen() {
                 <AppButton
                   title="Next"
                   onPress={(values) => {
-                    handleNextButton();
                     handleSubmit(values);
                   }}
                 />
@@ -170,8 +166,7 @@ export default function SignUpScreen() {
                   <AppButton
                     title="Next"
                     onPress={(values) => {
-                      console.log(errors);
-                      if (!errors) console.log("yaaaay");
+                      if (Object.keys(errors).length === 0) return;
                       handleNextButton();
                       handleSubmit(values);
                     }}
@@ -182,8 +177,61 @@ export default function SignUpScreen() {
             </>
           )}
         </Formik>
+      );
+    if (step === 1)
+      return (
+        <>
+          <View
+            style={{
+              marginVertical: imageUri ? "20%" : "60%",
+              alignSelf: "center",
+            }}
+          >
+            {!imageUri ? (
+              <IdVerification handleSetIdImage={handleSetIdImage} />
+            ) : (
+              <Image
+                source={{ uri: imageUri }}
+                style={{ width: 300, height: 300 }}
+              />
+            )}
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <AppButton
+              title="Back"
+              onPress={(values) => {
+                handleBackButton();
+              }}
+              style={{ width: "40%" }}
+            />
+            <AppButton
+              title="Next"
+              onPress={(values) => {
+                if (imageUri) handleNextButton();
+                return;
+                // handleSubmit(values);
+              }}
+              style={{ width: "40%" }}
+            />
+          </View>
+        </>
+      );
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.stepperContainer}>
+        <StepperSingup stepperArray={stepper} currentStep={step} />
+        <View style={styles.stepperConnector} />
       </View>
-    </View>
+      <View style={styles.form}>{renderStepContent()}</View>
+    </ScrollView>
   );
 }
 
@@ -204,6 +252,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#f6f6f6",
+    height: 400,
   },
   error: {
     color: "red",

@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().label("Password"),
 });
 
-export default function LoginScreen() {
+export default function LoginScreen(props) {
   return (
     <ImageBackground
       source={require("../assets/login-page-assests/login-background.jpg")}

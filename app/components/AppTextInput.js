@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 18,
+    width: "100%",
   },
   icon: {
     marginRight: 10,

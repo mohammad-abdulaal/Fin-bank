@@ -8,7 +8,7 @@ export default function StepperSingup({ stepperArray, currentStep }) {
   const displayStepper = (index) => {
     if (index < currentStep) {
       return (
-        <Ionicons name="md-checkmark" size={20} color="#fff" key={index} />
+        <Ionicons name="md-checkmark" size={20} color="#fff" key={index + 1} />
       );
     }
     if (index >= currentStep) {
@@ -30,7 +30,7 @@ export default function StepperSingup({ stepperArray, currentStep }) {
         {stepperArray.map((value, index) => {
           return (
             <>
-              <View style={styles.stepperNodes}>
+              <View style={styles.stepperNodes} key={value}>
                 <View
                   style={[
                     styles.circle,
@@ -43,7 +43,7 @@ export default function StepperSingup({ stepperArray, currentStep }) {
                 >
                   {displayStepper(index)}
                 </View>
-                <Text>{value}</Text>
+                <Text key={value + index}>{value}</Text>
               </View>
             </>
           );

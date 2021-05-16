@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, Image } from "react-native";
 
 import AppButton from "../components/AppButton";
 
-export default function LandingScreen() {
+export default function LandingScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>FinBank</Text>
@@ -11,8 +11,16 @@ export default function LandingScreen() {
         source={require("../assets/landing-page-assets/financial-services.gif")}
         style={styles.imageBackground}
       >
-        <AppButton title="login" style={styles.loginButton} />
-        <AppButton title="register" style={styles.registerButton} />
+        <AppButton
+          title="login"
+          style={styles.loginButton}
+          onPress={() => navigation.navigate("LoginScreen")}
+        />
+        <AppButton
+          title="register"
+          style={styles.registerButton}
+          onPress={() => navigation.navigate("Register")}
+        />
       </ImageBackground>
     </View>
   );

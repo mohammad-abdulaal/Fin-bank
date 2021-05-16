@@ -16,6 +16,7 @@ export default function AppSelector({ onChange, onPress }) {
 
   return (
     <DropDownPicker
+      placeholder="Select your location"
       open={open}
       value={value}
       items={items}
