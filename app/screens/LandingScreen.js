@@ -31,7 +31,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
-
+  loginButton:{
+    backgroundColor: "black",
+    marginVertical:-30
+  },
   imageBackground: {
     flex: 1,
     resizeMode: "cover",
@@ -41,6 +44,7 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     backgroundColor: "gray",
+    marginVertical:50
   },
   text: {
     position: "relative",

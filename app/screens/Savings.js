@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View , Button} from 'react-native'
-// import { Ionicons } from '@expo/vector-icons';
-const blank = () => {
+const Savings = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>blank</Text>
@@ -14,6 +13,7 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         alignItems:'center',
+        backgroundColor:'#add8e6'
 
     },
     text:{
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
 
     }
 })
-export default blank;
+export default Savings;

@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().label("Password"),
 });
 
-export default function LoginScreen(props) {
+export default function LoginScreen({navigation}) {
   return (
     <ImageBackground
       source={require("../assets/login-page-assests/login-background.jpg")}
@@ -73,9 +73,10 @@ export default function LoginScreen(props) {
                 )}
                 <AppButton
                   title="Sign In"
-                  onPress={(values) => {
-                    handleSubmit(values);
-                  }}
+                  // onPress={(values) => {
+                  //   handleSubmit(values);
+                  // }}
+                  onPress={() =>navigation.navigate("FinBank")}
                 />
               </>
             )}

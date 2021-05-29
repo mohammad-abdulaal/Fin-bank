@@ -1,40 +1,41 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from '../screens/home'
-import blank from '../screens/blank'
 import test from '../screens/test'
-import notifications from '../screens/notifications'
-import profile from '../screens/profile'
 import TabBar from '../components/TabBar'
+import Accounts from "../screens/Accounts";
+import Savings from "../screens/Savings";
+import Payments from "../screens/Payments";
+import Profile from "../screens/Profile";
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
     return (
         <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
             <Tab.Screen
-                name="Home"
-                component={Home}
-                initialParams={{ icon: "home" }} // for giving every component an icon
+                name="Accounts"
+                component={Accounts}
+                initialParams={{ icon: "account-balance" }} // for giving every component an icon
+                options={{ title:'Accounts' }}
             />
             <Tab.Screen
-                name="blank"
-                component={blank}
-                initialParams={{ icon: "plus" }}
+                name="Savings"
+                component={Savings}
+                initialParams={{ icon: "account-balance-wallet" }}
+            />
+            <Tab.Screen
+                name="Pay"
+                component={Payments}
+                initialParams={{ icon: "payments" }}
             />
             <Tab.Screen
                 name="Profile"
-                component={profile}
-                initialParams={{ icon: "user" }}
+                component={Profile}
+                initialParams={{ icon: "person" }}
             />
-            <Tab.Screen
-                name="Notifications"
-                component={notifications}
-                initialParams={{ icon: "notification" }}
-            />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="test"
                 component={test}
                 initialParams={{ icon: "notification" }}
-            />
+            /> */}
         </Tab.Navigator>
     );
 };

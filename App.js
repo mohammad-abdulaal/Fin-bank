@@ -16,23 +16,31 @@ import LandingScreen from "./app/screens/LandingScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import TabNavigator from "./app/navigation/TabNavigator";
+import PayScanner from "./app/components/PayScanner";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
-    // <Stack.Navigator initialRouteName="LandingScreen">
-    //   <Stack.Screen
-    //     name="LandingScreen"
-    //     component={LandingScreen}
-    //     options={{
-    //       headerShown: false,
-    //     }}
-    //   />
-    //   <Stack.Screen name="LoginScreen" component={LoginScreen} />
-    //   <Stack.Screen name="Register" component={SignUpScreen} />
-    //   <Stack.Screen name="TabNavigator" component={TabNavigator} />
-    // </Stack.Navigator>
-    <TabNavigator/>
+    <Stack.Navigator initialRouteName="LandingScreen" >
+      <Stack.Screen
+        name="LandingScreen"
+        component={LandingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="Register" component={SignUpScreen} />
+      <Stack.Screen
+      name="FinBank"
+      component={TabNavigator}
+      options={{
+        headerShown:false
+      }}
+      />
+      <Stack.Screen name="PayScanner" component={PayScanner} />
+    </Stack.Navigator>
+    // <TabNavigator/>
   );
 };
 export default function App() {

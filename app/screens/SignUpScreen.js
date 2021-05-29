@@ -50,6 +50,7 @@ export default function SignUpScreen() {
     location: Yup.string().required().label("Location"),
     firstName: Yup.string().required().label("First name"),
     lastName: Yup.string().required().label("Last name"),
+    Account: Yup.string().required().label("Account Balance"),
     phonenumber: Yup.string()
       .matches(/[0-9]{8}/, "Phone number must be 8 digits")
       .label("Phone number"),
@@ -79,7 +80,7 @@ export default function SignUpScreen() {
             values,
             errors,
           }) => (
-            <>
+            <ScrollView>
               <AppTextInput
                 placeholder="Email"
                 icon="email"
@@ -132,6 +133,17 @@ export default function SignUpScreen() {
               {touched.phonenumber && errors.phonenumber && (
                 <Text style={styles.error}>{errors.phonenumber}</Text>
               )}
+              <AppTextInput
+                placeholder="Account Balance in US Dollars"
+                icon="bank"
+                onChangeText={handleChange("Account")}
+                style={{ width: "100%" }}
+                onBlur={() => setFieldTouched("Account")}
+                keyboardType="numeric"
+              />
+              {touched.account && errors.acount && (
+                <Text style={styles.error}>{errors.account}</Text>
+              )}
 
               <AppSelector
                 onChange={handleChange("location")}
@@ -174,7 +186,7 @@ export default function SignUpScreen() {
                   />
                 </View>
               )}
-            </>
+            </ScrollView>
           )}
         </Formik>
       );
