@@ -3,21 +3,22 @@ import { StyleSheet , View} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ScrollView } from "react-native-gesture-handler";
 import colors from "../config/colors";
-
+import { AntDesign } from '@expo/vector-icons';
 export default function CurrencySelector({ onChange, onPress , props}) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "United States Dollar", value: "United States Dollar" },
-    // { label: "EURO ", value: "EURO " },
-    { label: "LEBANESE LIRA ", value: "LEBANESE LIRA" },
+    { label: "Riyal Qatar(QAR)" , value: "Riyal Qatar(QAR)" },
+    { label: "Omani Riyal(OMR)", value: "Omani Riyal(OMR)" },
+    { label: "Dirham Emirati(AED)", value: "Dirham Emirati(AED)" },
+    { label: "Euro(€)", value: "Euro(€)" },
 
   ]);
 
   return (
     <View style={styles.view}>
-      <DropDownPicker
-      placeholder="Select Currency "
+    <DropDownPicker
+      placeholder="Select Currency"
       open={open}
       value={value}
       items={items}
@@ -26,16 +27,12 @@ export default function CurrencySelector({ onChange, onPress , props}) {
       setItems={setItems}
       style={styles.selector}
       textStyle={styles.text}
-      onChangeValue={onChange} // change value inside it
-      onPress={onPress}        //
+      onChangeValue={onChange}
+      onPress={onPress}
       searchable={false}
       textStyle={styles.text}
       listMode='SCROLLVIEW'
-      // containerStyle={{ width:"100%"  }}
-      // listMode='DEFAULT'
-      // modalProps={{ animationType: 'slide', width: "20%", height: '10%'}}
-      // modalContentContainerStyle={{backgroundColor: "#fff", width:'50%', height:'50%'}}
-      />
+    />
     </View>
 
 
@@ -49,16 +46,8 @@ const styles = StyleSheet.create({
     borderRadius: 30 ,
     height: 60,
     width:350,
-    marginVertical: 5,
+    marginVertical: 6,
     marginLeft:-5
-      // marginHorizontal:10,
-      // marginRight:20,
-      // justifyContent: "center",
-      // flex: 1,
-      // alignItems: "center",
-      // position: 'absolute',
-      // zIndex:5
-
   },
   text:{
     flex:1,
@@ -69,17 +58,9 @@ const styles = StyleSheet.create({
 
   view:{
     marginHorizontal:10,
-
+    marginVertical:-10,
+    // paddingVertical:100
+    paddingVertical:18
   }
-  // container: {
-  //   flex: 1,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   backgroundColor: colors.lightBlue,
-  //   borderColor: "transparent",
-  //   borderRadius: 80,
-  //   height: 40,
-  //   marginVertical: 30,
-  //   justifyContent: "center",
 
 });

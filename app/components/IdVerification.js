@@ -17,7 +17,7 @@ export default function IdVerification({ handleSetIdImage }) {
   const onCameraCapture = async () => {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      quality: 0.6,
+      quality: 0.2,
       base64: true,
     });
     handleSetIdImage(result.uri);

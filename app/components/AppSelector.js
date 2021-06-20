@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { SafeAreaView } from "react-native";
+import { ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import colors from "../config/colors";
@@ -15,7 +17,8 @@ export default function AppSelector({ onChange, onPress }) {
   ]);
 
   return (
-    <DropDownPicker
+
+      <DropDownPicker
       placeholder="Select your location"
       open={open}
       value={value}

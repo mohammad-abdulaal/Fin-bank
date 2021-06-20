@@ -14,7 +14,7 @@ export default function LandingScreen({ navigation }) {
         <AppButton
           title="login"
           style={styles.loginButton}
-          onPress={() => navigation.navigate("LoginScreen")}
+          onPress={() => navigation.navigate("Welcome To FinBank")}
         />
         <AppButton
           title="register"

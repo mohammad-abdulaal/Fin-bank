@@ -16,7 +16,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import CurrencySelector from "../components/CurrencySelector";
 import AppSelector from "../components/CurrencySelector";
 import {Header} from 'react-native-elements';
+import { Entypo } from '@expo/vector-icons';
 import AppButton from '../components/AppButton';
+import axios from 'axios'
+import { Image } from 'react-native';
 export default class Accounts extends Component {
 
     // const [currency, setCurrency] = useState('');
@@ -26,7 +29,12 @@ export default class Accounts extends Component {
       this.state = {
         showButton:false,
         currency_name:this.props,
+        currency_amount:5000,
         modIndex: null,
+        currency_times_usaed:"",
+        currency_times_useuro:"",
+        currency_times_usqtr:"",
+        currency_times_usomr:"",
         editmode: false,
         input: '',
         user: {
@@ -35,19 +43,10 @@ export default class Accounts extends Component {
           last_name: "smith",
         },
         data: [
+
           {
             id: 2,
-            currency_name: "Kuwaiti Dinar",
-            owner: {
-              id: 1,
-              first_name: "bob",
-              last_name: "smith",
-              currency_amount:"800"
-            },
-          },
-          {
-            id: 2,
-            currency_name: "United States Dollar",
+            currency_name: "United States Dollars(USD)",
             owner: {
               id: 1,
               first_name: "Mohammad",
@@ -59,7 +58,29 @@ export default class Accounts extends Component {
         // data: [],
       };
     }
+    componentDidMount(){
+      // axios
+      //     .get('http://api.currencylayer.com/live?access_key=f06a259aafbf855920bb8ed1e4e97c59')
+      //     .then((res)=> {
+      //       console.log('currency:',res.data)
+      //       console.log('hi',res.data.quotes.USDAED)
+      //       console.log('hi2',res.data.quotes.USDOMR)
+      //       // this.setTimeout(() => {
+      //         this.setState(
+      //           {
+      //             currency_times_usaed:res.data.quotes.USDAED,
+      //             currency_times_useuro:res.data.quotes.USDEUR,
+      //             currency_times_usqtr:res.data.quotes.USDQAR,
+      //             currency_times_usomr:res.data.quotes.USDOMR,
 
+      //           }
+      //         );
+      //         console.log(this.state.currency_times_usaed)
+      //       // },[]);
+
+      //     }
+      //     )
+    }
     render() {
         // Stylehsheet
         const styles = StyleSheet.create({
@@ -88,9 +109,23 @@ export default class Accounts extends Component {
           marginTop: 20,
         },
         test:{
-           backgroundColor:"#FFF",
-           marginVertical:5
-        },
+          //  backgroundColor:"#FFF",
+          //  marginVertical:5,
+          //  shadowColor: "#000",
+          //  shadowOffset: {
+          //    width: 0,
+          //    height: 12,
+          //   },
+          //  shadowOpacity: 0.58,
+          //  shadowRadius: 16.00,
+          //  elevation: 24,
+          backgroundColor:'#FFF',
+           borderRadius: 10 ,
+           width:350,
+           marginVertical: 5,
+           marginLeft:5
+
+          },
         fixToText: {
           flexDirection: "row",
           justifyContent: "space-evenly",
@@ -104,7 +139,8 @@ export default class Accounts extends Component {
             flex:10,
             justifyContent:'center',
             alignItems:'center',
-            marginTop:45
+            marginTop:45,
+            marginVertical:-5
         },
         text_title: {
           fontSize:20,
@@ -116,7 +152,7 @@ export default class Accounts extends Component {
         },
         currency:{
           backgroundColor:0,
-          // marginVertical:5
+          marginVertical:10
         },
         hi:{
           width:160,
@@ -125,35 +161,57 @@ export default class Accounts extends Component {
         hi2:{
           width:180
 
+        },
+        // test2:{
+        //   backgroundColor:'#FFF'
+        // },
+        hi3:{
+          marginLeft:-110,
+          marginVertical:-210,
+          marginTop:-290
+        },
+        hi4:{
+          marginVertical:-10,
+          padding:10,
+          marginLeft:-10
         }
       });
       const entries = this.state.data.map((entry, i) => {
         return (
             <View style={styles.test}>
-                <Card.Title
-                key={i}
-                title={entry.currency_name}
-                subtitle=
+                <Card>
+                  <Card.Title
+                  key={i}
+                  title={entry.currency_name}
+                  subtitle=
                     {"" + entry.owner
                     ? entry.owner.currency_amount
                     : "N/A"}
+                  right={(props) => <Entypo {...props} name="cross"  onPress={() => {this.handleDelete(i)}}  />}
+                  />
 
-                right={(props) => <MaterialIcons {...props} name="delete"  onPress={() => {this.handleDelete(i)}}  />}
-                />
+                </Card>
             </View>
 
 
         );
       });
       return (
-        <ScrollView >
+        <View>
+          <ScrollView >
           <View style={styles.container_Text}>
-            <Text style={styles.text}>See Your Account Balance In Different Currency</Text>
+            <View style={styles.hi3}>
+              <Image
+              source={require("../assets/finbank_logo.png")}
+              style={{ width: 600, height: 600 }}
+              />
+            </View>
+            <Text style={styles.text}>Check Your Account Balance In Different Currencies</Text>
           </View>
           {this.state.user.id ? (
 
             <View >
-              <View  >
+              <View style={styles.hi4}  >
                 <CurrencySelector
                 style={styles.currency}
                 onChange={this.onCurrencySelectorChange}
@@ -167,14 +225,14 @@ export default class Accounts extends Component {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-evenly",
-                marginVertical: -3,
+                marginVertical: -5,
                 backgroundColor:0
                 ,
               }}>
                 <AppButton
                   onPress={this.handleAdd}
                   value={this.props.items}
-                  title="Open Account "
+                  title="Check Account"
                   color="#1C8FCB"
                   style={styles.hi}
                   // style={{ width: "40%" }}
@@ -196,14 +254,13 @@ export default class Accounts extends Component {
           )}
           <ScrollView>{entries}</ScrollView>
           {/* <Text style={styles.Text}>Suggest us an currency you would like to see in currency list by email</Text> */}
-
-        </ScrollView>
+          </ScrollView>
+        </View>
       );
     }
     onCurrencySelectorChange = (value,index) =>{
       this.setState({
           currency_name: value,
-
         })
         // console.log(value)
         // console.log("hi")
@@ -226,21 +283,63 @@ export default class Accounts extends Component {
         var newid = 0;
       }
       // Create new Account object
+      if (this.state.currency_name==="Dirham Emirati(AED)"){
+        let a=this.state.currency_times_usaed
+        currentData={
+          currency_name:this.state.currency_name,
+          owner:{
+            currency_amount:this.state.currency_amount*a
+          }
+
+        }
+      }
+      if (this.state.currency_name==="Euro(€)"){
+        let b=this.state.currency_times_useuro
+        currentData={
+          currency_name:this.state.currency_name,
+          owner:{
+            currency_amount:this.state.currency_amount*b
+          }
+
+        }
+      }
+      if (this.state.currency_name==="Riyal Qatar(QAR)"){
+        let c=this.state.currency_times_usqtr
+        currentData={
+          currency_name:this.state.currency_name,
+          owner:{
+            currency_amount:this.state.currency_amount*c
+          }
+
+        }
+      }
+      if (this.state.currency_name==="Omani Riyal(OMR)"){
+        let d=this.state.currency_times_usomr
+        currentData={
+          currency_name:this.state.currency_name,
+          owner:{
+            currency_amount:this.state.currency_amount*d
+          }
+
+        }
+      }
       let newAccount = {
         id: newid,
         currency_name: this.state.currency_name,
+        currency_amount:this.state.currency_amount,
         owner: {
           id: this.state.user.id,
           first_name: this.state.user.first_name,
           last_name: this.state.user.last_name,
-          currency_amount:5000 * 1500
+          currency_amount:this.state.currency_amount
         },
       };
 
       // Add new Account object to data then clear input
       this.setState((state) => ({
-        data: [...state.data, newAccount],
+        data: [...state.data, currentData],
         currency_name:this.props.value,
+        currency_amount:this.state.currency_amount,
       }));
     };
 

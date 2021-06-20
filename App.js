@@ -17,6 +17,7 @@ import LoginScreen from "./app/screens/LoginScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import TabNavigator from "./app/navigation/TabNavigator";
 import PayScanner from "./app/components/PayScanner";
+import api from "./app/config/serverAPI";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
@@ -29,7 +30,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="Welcome To FinBank" component={LoginScreen} />
       <Stack.Screen name="Register" component={SignUpScreen} />
       <Stack.Screen
       name="FinBank"
@@ -44,6 +45,12 @@ const StackNavigator = () => {
   );
 };
 export default function App() {
+  // const logout = async()=>{
+  //   api.defaults.headers.common["Authorization"] =`Bearer ${
+  //     JSON.parse(localStorage.getItem(""))
+  //   }
+  //   `
+  // };
   return (
     <NavigationContainer>
       <StackNavigator />

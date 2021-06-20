@@ -17,7 +17,7 @@ const TabNavigator = () => {
                 options={{ title:'Accounts' }}
             />
             <Tab.Screen
-                name="Savings"
+                name="Wallet"
                 component={Savings}
                 initialParams={{ icon: "account-balance-wallet" }}
             />

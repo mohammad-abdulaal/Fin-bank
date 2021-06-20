@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -10,33 +10,48 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+import axios from "axios";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
+import {instance} from "../config/serverAPI"
 
 const loginInitialValues = {
   email: "",
   password: "",
 };
 
+
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().label("Password"),
 });
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({navigation},props) {
   return (
     <ImageBackground
       source={require("../assets/login-page-assests/login-background.jpg")}
       style={styles.imageBackground}
     >
       <View style={styles.container}>
-        <Text style={styles.text}>FinBank</Text>
+        <View style={styles.logo}>
+          <Image
+          source={require('../assets/finbank_logo.png')}
+          style={{ width: 400, height: 400 }}
+          />
+        </View>
+        {/* <Text style={styles.text}>FinBank</Text> */}
         <View style={styles.form}>
           <Formik
             initialValues={loginInitialValues}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={(values) => {axios.post('http://localhost:8000/api/login',values)
+            .then((res)=>{
+              if(res.status == 200){
+                navigation.navigate('FinBank')
+              }
+            })
+          }}
             validationSchema={validationSchema}
+
           >
             {({
               handleChange,
@@ -48,7 +63,8 @@ export default function LoginScreen({navigation}) {
               errors,
             }) => (
               <>
-                <AppTextInput
+                <View style={styles.buttons}>
+                  <AppTextInput
                   autoCapitalize="none"
                   keyboardType="email-address"
                   placeholder="Email"
@@ -56,28 +72,31 @@ export default function LoginScreen({navigation}) {
                   onChangeText={handleChange("email")}
                   value={values.email}
                   onBlur={() => setFieldTouched("email")}
-                />
-                {errors.email && touched.email && (
+                  />
+                  {errors.email && touched.email && (
                   <Text style={styles.error}>{errors.email}</Text>
-                )}
-                <AppTextInput
+                  )}
+                  <AppTextInput
                   onChangeText={handleChange("password")}
                   placeholder="Password"
                   icon="lock"
                   secureTextEntry
                   value={values.password}
                   onBlur={() => setFieldTouched("password")}
-                />
-                {errors.password && touched.password && (
-                  <Text style={styles.error}>{errors.password}</Text>
-                )}
-                <AppButton
-                  title="Sign In"
-                  // onPress={(values) => {
-                  //   handleSubmit(values);
-                  // }}
-                  onPress={() =>navigation.navigate("FinBank")}
-                />
+                  />
+                  {errors.password && touched.password && (
+                  <Text style={styles.error}>{errors.password}</Text>)}
+                  <View style={styles.buttons1}>
+                    <AppButton
+                    title="Sign In"
+                    // style={{ width:'70%' }}
+                    // onPress={(values) => {
+                      //   handleSubmit(values);
+                      // }}
+                    onPress={() =>navigation.navigate("FinBank")}
+                    />
+                  </View>
+                </View>
               </>
             )}
           </Formik>
@@ -98,9 +117,14 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
   },
+  buttons:{
+    justifyContent:'center',
+    marginLeft:20
+  },
   text: {
     fontSize: 30,
     fontWeight: "bold",
+    color:"#fff"
   },
   error: {
     color: "red",
@@ -112,4 +136,9 @@ const styles = StyleSheet.create({
     width: "95%",
     justifyContent: "flex-start",
   },
+  logo:{
+    marginLeft:-60,
+    marginVertical:-135,
+    marginTop:-190
+  }
 });

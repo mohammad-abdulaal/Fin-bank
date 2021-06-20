@@ -6,18 +6,18 @@ const Payments = ({navigation}) => {
         // <ImageBackground
         // source={require("../assets/digital-money-background.jpg")}
         // style={styles.imageBackground}>
-            <View style={styles.container}>
+        <View style={styles.container}>
             <Image
             source={require("../assets/debit.png")}
             style={{ width: 500, height: 500 }}
             />
-            <Text style={styles.text}>Press To Pay</Text>
+            <Text style={styles.text}>Press Here</Text>
             <AppButton
             title='Pay'
             style={styles.button}
             onPress={()=>navigation.navigate("PayScanner")}
             />
-            </View>
+        </View>
         // </ImageBackground>
 
     )
@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button:{
-        width:200
+        width:200,
+        fontWeight:'bold',
+        // padding:12,
+        fontSize:15
     }
 })
 export default Payments;

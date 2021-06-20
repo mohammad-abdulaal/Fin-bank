@@ -12,13 +12,16 @@ import {
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+import { FontAwesome } from '@expo/vector-icons';
 import StepperSingup from "../components/StepperSingup";
 import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import AppSelector from "../components/AppSelector";
 import IdVerification from "../components/IdVerification";
+import { ImageBackground } from "react-native";
+import { SafeAreaView } from "react-native";
+import AppTextInput1 from "../components/AppTextInput1";
 
 const stepper = ["Information", "ID Verification", "Finished"];
 const formInitialValue = {
@@ -30,7 +33,7 @@ const formInitialValue = {
   location: "",
 };
 
-export default function SignUpScreen() {
+export default function SignUpScreen({navigation}) {
   const [step, setStep] = useState(0);
   const [imageUri, setImageUri] = useState();
 
@@ -80,7 +83,7 @@ export default function SignUpScreen() {
             values,
             errors,
           }) => (
-            <ScrollView>
+            <>
               <AppTextInput
                 placeholder="Email"
                 icon="email"
@@ -145,13 +148,25 @@ export default function SignUpScreen() {
                 <Text style={styles.error}>{errors.account}</Text>
               )}
 
-              <AppSelector
+                <AppSelector
                 onChange={handleChange("location")}
                 onPress={() => setFieldTouched("location")}
-              />
+                />
+
               {touched.location && errors.location && (
-                <Text style={styles.error}>{errors.location}</Text>
+              <Text style={styles.error}>{errors.location}</Text>
               )}
+              {/* <AppTextInput1
+                placeholder="Location"
+                icon="location"
+                onChangeText={handleChange("Location")}
+                style={{ width: "100%" }}
+                onBlur={() => setFieldTouched("Location")}
+
+              />
+             {touched.location && errors.location && (
+                <Text style={styles.error}>{errors.location}</Text>
+              )} */}
               {step <= 0 ? (
                 <AppButton
                   title="Next"
@@ -186,7 +201,7 @@ export default function SignUpScreen() {
                   />
                 </View>
               )}
-            </ScrollView>
+            </>
           )}
         </Formik>
       );
@@ -224,9 +239,9 @@ export default function SignUpScreen() {
             />
             <AppButton
               title="Next"
-              onPress={(values) => {
+              onPress={() => {
                 if (imageUri) handleNextButton();
-                return;
+                return ;
                 // handleSubmit(values);
               }}
               style={{ width: "40%" }}
@@ -234,6 +249,36 @@ export default function SignUpScreen() {
           </View>
         </>
       );
+      if (step === 2)
+      return (
+        <>
+          <ImageBackground
+          source={require('../assets/animation_500_kpzapyyu.gif')}
+          style={{ width: 500, height: 500,flex:1,marginLeft:-100}}
+          >
+            <View style={styles.Intro}>
+              <Text style={styles.text}>Thanks For Choosing Us !</Text>
+            </View>
+            <View
+            style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            marginRight:-40
+            }}>
+              <AppButton
+              title="Lets Go"
+              onPress={() => {
+                navigation.navigate('FinBank')
+                // handleSubmit(values);
+              }}
+              style={{ width: "40%" }}
+              />
+            </View>
+          </ImageBackground>
+        </>
+      );
+
   };
 
   return (
@@ -288,5 +333,16 @@ const styles = StyleSheet.create({
   },
   form: {
     padding: 10,
+  },
+  Intro:{
+    marginVertical:20
+  },
+  text: {
+    position: "relative",
+    alignSelf: "center",
+    top: "30%",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginRight:-40
   },
 });

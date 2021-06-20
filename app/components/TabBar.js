@@ -6,7 +6,7 @@ const {width}=Dimensions.get('screen')
 const TabBar=({state,navigation}) => {
     const [selected,setSelected] =useState('Home')
     const {routes} = state;
-    const renderColor =(currentTab)=>(currentTab===selected ? 'blue' : 'black');
+    const renderColor =(currentTab)=>(currentTab===selected ? 'blue' : '#808080');
     const handlePress =(activeTab,index) => {
         if (state.index !== index){
             setSelected(activeTab);
