@@ -28,8 +28,9 @@ export default function StepperSingup({ stepperArray, currentStep }) {
     <>
       <View style={styles.container}>
         {stepperArray.map((value, index) => {
+          console.log("steppersignup",value,index)
           return (
-            <>
+
               <View style={styles.stepperNodes} key={value}>
                 <View
                   style={[
@@ -45,7 +46,7 @@ export default function StepperSingup({ stepperArray, currentStep }) {
                 </View>
                 <Text key={value + index}>{value}</Text>
               </View>
-            </>
+
           );
         })}
       </View>

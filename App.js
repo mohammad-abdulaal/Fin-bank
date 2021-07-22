@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React ,{useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -18,9 +18,17 @@ import SignUpScreen from "./app/screens/SignUpScreen";
 import TabNavigator from "./app/navigation/TabNavigator";
 import PayScanner from "./app/components/PayScanner";
 import api from "./app/config/serverAPI";
+import { LogBox  } from 'react-native';
+import PayPage from "./app/screens/PayPage";
+import test from "./app/screens/test";
+
+
+
+// LogBox.ignoreLogs(["VirtualizedLists should never be nested inside plain ScrollViews with the same orientation"])
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
+  // const [amount,setAmount] = useState("");
   return (
     <Stack.Navigator initialRouteName="LandingScreen" >
       <Stack.Screen
@@ -39,7 +47,9 @@ const StackNavigator = () => {
         headerShown:false
       }}
       />
-      <Stack.Screen name="PayScanner" component={PayScanner} />
+      <Stack.Screen name="Scan Product" component={PayScanner} />
+      <Stack.Screen name="Pay By Transfer" component={test} />
+      <Stack.Screen name="Payment" component={PayPage} />
     </Stack.Navigator>
     // <TabNavigator/>
   );

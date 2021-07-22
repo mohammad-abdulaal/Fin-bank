@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import AppButton from './AppButton';
+import { Alert } from 'react-native';
 
-export default function PayScanner() {
+export default function PayScanner({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   let balance=5000;
-
+  let amountToPay = "";
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -15,14 +16,23 @@ export default function PayScanner() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data,amount }) => {
+
+  const handleBarCodeScanned = ({ amount , data }) => {
     // setScanned(true);
     // if (`${data}`=='FinBank'){
       setScanned(true);
-      alert(`The items is purchased , thank you for choosing us`);
-      // alert(`${data}`)
+      // alert(`The price of the item you're purchasing is $${data}. `);
+      Alert.alert(
+        "Purchase Alert!",
+        `The price of the item you're purchasing is $${data}`,
+        [
+          { text: "Proceed" , onPress:() => navigation.navigate("Pay By Transfer",{amountToPay:amountToPay} )},
+        ]
+      )
+      amountToPay = data
+      console.log("amountToPay: ", amountToPay)
       console.log(typeof(data))
-      console.log(data)
+      console.log("Amount: ", data)
       console.log(typeof(JSON.stringify(`${data}`)))
       amount=5000-data
       console.log(amount)
@@ -32,6 +42,7 @@ export default function PayScanner() {
     // }
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
+  // console.log(data)
 
 
   if (hasPermission === null) {
@@ -46,13 +57,16 @@ export default function PayScanner() {
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
+        // value={console.log("hi",amountToPay)}
       />
       {scanned &&
       <View >
-      <AppButton
-      title={'Tap to Scan Again'}
-      onPress={() => setScanned(false)}
-      />
+      {/* <AppButton
+      title={'Pay'}
+
+      onPress={() => navigation.navigate("Pay By Transfer",{amountToPay:amountToPay} )}
+      // onPress={() => console.log("hi",amountToPay)}
+      /> */}
       </View>
       }
 

@@ -11,13 +11,14 @@ import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 import axios from 'axios';
 import { heading } from "../config/Header";
+import AmountSelector from "../components/CurrencySelectorSavings";
 
 export default function TransactionList({ addTransaction,isSelected1,isSelected2,setSelection1,setSelection2 }) {
   const [transaction, setTransaction] = useState({
     name: "",
     amount: "",
   });
-
+  let sign="";
   const handleNameChange = (textValue) => {
     setTransaction((prevTransaction) => ({
       ...prevTransaction,
@@ -43,8 +44,10 @@ export default function TransactionList({ addTransaction,isSelected1,isSelected2
   const clearForm = () => {
     setTransaction({ name: "", amount: "" });
   };
-  console.log(transaction.amount)
-  let item="av";
+  const onCurrencySelectorChange = (value,index) =>{
+
+    console.log(value)
+  }
   return (
     <View style={styles.box}>
       <Text style={[heading.h4, heading.subTitle]}>Add New Transaction</Text>
@@ -62,49 +65,53 @@ export default function TransactionList({ addTransaction,isSelected1,isSelected2
         />
         <Text style={styles.label}>Expense</Text>
       </View>
-        {/* <AppTextInput
-         placeholder="Enter Name..."
-         onChangeText={handleNameChange}
-         value={transaction.name}/>
-        <AppTextInput
-        placeholder="Enter Amount..."
-        keyboardType="numeric"
-        onChangeText={handleAmountChange}
-        value=
-        {transaction.amount} */}
-
       {isSelected2 ?
       <View>
          <AppTextInput
-         placeholder="Enter Name..."
+         placeholder="Enter Name"
          onChangeText={handleNameChange}
-         value={transaction.name}/>
+         value={transaction.name}
+        //  style={{ width:320 }}
+         />
+         {/* <AmountSelector
+         onChange={onCurrencySelectorChange}
+         /> */}
          <AppTextInput
-         placeholder="Enter Amount..."
+         placeholder="Enter Amount"
          keyboardType="numeric"
          onChangeText={handleAmountChange}
-         value={transaction.amount} />
+         value={transaction.amount}
+        //  style={{ width:320 }}
+         />
       </View>
       :
       <View>
         <AppTextInput
-         placeholder="Enter Name..."
+         placeholder="Enter Name"
          onChangeText={handleNameChange}
-         value={transaction.name}/>
-        <AppTextInput
-        placeholder="Enter Amount"
-        keyboardType="numeric"
-        onChangeText={handleAmountChange}
-        value={transaction.amount}
-      />
+         value={transaction.name}
+        //  style={{ width:320 }}
+         />
+         {/* <AmountSelector
+          onChange={onCurrencySelectorChange}
+         /> */}
+         <AppTextInput
+         placeholder="Enter Amount"
+         keyboardType="numeric"
+         onChangeText={handleAmountChange}
+         value={transaction.amount}
+        //  style={{ width:320 }}
+         />
       </View>
        }
       <AppButton
       onPress={(e)=>{
           clearForm();
           addTransaction(e,transaction);
+          onCurrencySelectorChange(e,sign)
       }}
       title="Add transaction"
+      // style={{ marginLeft:8 }}
       />
     </View>
   );
@@ -142,14 +149,16 @@ input: {
   },
   checkboxContainer: {
     flexDirection: "row",
-    marginBottom: 20,
+    marginBottom: 150,
     marginLeft:60,
     marginVertical:0,
-    marginBottom:-1
+    marginBottom:-1,
+
   },
   label: {
-    margin: 5,
-    marginVertical:6
+    margin: 1,
+    marginVertical:1,
+    marginTop:6
   },
   checkboxContainer2: {
     flexDirection: "row",
@@ -164,5 +173,7 @@ input: {
   },
   checkbox: {
     alignSelf: "center",
+    // margin:10
+
   },
 });

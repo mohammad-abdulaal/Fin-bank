@@ -1,48 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert , CheckBox } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-
+import { TapGestureHandler, RotationGestureHandler } from 'react-native-gesture-handler';
 import { numberWithCommas } from "../utils/Format";
 import colors from "../config/colors";
-
-export default function TransactionList({ item, deleteTransaction ,  isSelected1 ,isSelected2 }) {
-
-  // {props.isselected1? "+ {item.amount}" : props.isselected2: "- {item.amount}" }
-  // {isSelected2? "-"}
-  // let sign = +item.amount < 0 ? expense : income ;
-  // isSelected1? "+" : "";
-  // isSelected2? "-" : "";
-  // let sign = +item.amount < 0 ? "-" : "+" ;
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+export default function TransactionList({ item, deleteTransaction ,  isSelected1 ,isSelected2 ,renderRightActions}) {
   return (
-    <TouchableOpacity
-      style={[styles.listItem, +item.amount < 0 ? styles.minus : styles.plus]}
-    >
+    <Swipeable renderRightActions={renderRightActions}>
+      <TouchableOpacity
+      style={[styles.listItem, +item.amount < 0 ? styles.minus : styles.plus]}>
       <View style={styles.listItemView}>
-        <TouchableOpacity style={styles.viewWrapper}
-         onPress={() =>
-          Alert.alert(
-            "Delete Transaction",
-            "Are you sure you want to delete this transaction?",
-            [
-              { text: "Yes", onPress: () => deleteTransaction(item.id) },
-              { text: "No" },
-            ]
-          )
-        }
-        >
+        <TouchableOpacity style={styles.viewWrapper}>
           <Text
           style={[styles.ml, styles.color]}>{item.name}</Text>
         </TouchableOpacity>
         <Text style={styles.color}>
           {" "}
           {isSelected1 && item.amount<0 ? "-" :"" }
-           {/* {isSelected1? "+" : ""}
-          {isSelected2? "-" : ""} */}
-          {numberWithCommas(Math.abs(+item.amount).toFixed(2))}
 
+          ${numberWithCommas(Math.abs(+item.amount).toFixed(2))}
         </Text>
       </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Swipeable>
   );
 }
 
@@ -51,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "space-between",
     position: "relative",
-    padding: 10,
+    padding: 15,
     marginTop: 10,
   },
   viewWrapper: {
@@ -70,11 +51,11 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   plus: {
-    borderRightColor:colors.lightBlue,
+    borderRightColor:"green",
     borderRightWidth: 5,
   },
   minus: {
-    borderRightColor: "black",
+    borderRightColor: "red",
     borderRightWidth: 5,
   },
 });

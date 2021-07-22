@@ -12,12 +12,12 @@ export default function LandingScreen({ navigation }) {
         style={styles.imageBackground}
       >
         <AppButton
-          title="login"
+          title="Login"
           style={styles.loginButton}
           onPress={() => navigation.navigate("Welcome To FinBank")}
         />
         <AppButton
-          title="register"
+          title="Register"
           style={styles.registerButton}
           onPress={() => navigation.navigate("Register")}
         />

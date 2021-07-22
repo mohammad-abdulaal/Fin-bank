@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
-import { StyleSheet } from "react-native";
+import { StyleSheet , View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import colors from "../config/colors";
 import {
   Text,
 } from "react-native";
-export default function AppSelector({ onChange, onPress }) {
+export default function AmountSelector({ onChange, onPress }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "Beirut", value: "Beirut" },
-    { label: "South", value: "South" },
-    { label: "North Lebanon", value: "North Lebanon" },
-    { label: "Beqaa", value: "Beqaa" },
-    { label: "Mount Lebanon", value: "Mount Lebanon" },
-    { label: "Baalbek-Hermel", value: "Baalbek-Hermel" },
+    { label: "United State Dollars ($)", value: "500"  },
+    { label: "Euro (€)", value: "€" },
+    { label: "Riyal Qatar (QAR)", value: "QAR"},
+    { label: "United Arab Emirates Dirham (AED)", value:"AED"  },
+    { label: "Omani Riyal (OMR)", value:"OMR"  },
+    // { label: "200$", value: 200  },
   ]);
 
   return (
-
+    <View style={styles.View}>
       <DropDownPicker
-      placeholder="Select your governorate"
+      placeholder="Select Currency"
       open={open}
       value={value}
       items={items}
@@ -34,7 +34,8 @@ export default function AppSelector({ onChange, onPress }) {
       onChangeValue={onChange}
       onPress={onPress}
       searchable={false}
-    />
+      />
+    </View>
     // <Text> hi </Text>
   );
 }
@@ -43,12 +44,20 @@ const styles = StyleSheet.create({
   slector: {
     backgroundColor: colors.lightBlue,
     borderColor: "transparent",
-    borderRadius: 20,
+    borderRadius: 25,
     height: 60,
     marginVertical: 10,
-    position:"relative"
+    position:"relative",
+    width:320
   },
   text: {
     fontSize: 17,
   },
+  View: {
+      marginHorizontal:-1,
+      marginVertical:-18,
+      // paddingVertical:100
+      paddingVertical:18
+
+  }
 });

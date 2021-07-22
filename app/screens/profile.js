@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View , StyleSheet , Text , Button} from 'react-native';
+import { View , StyleSheet , Text , Button , Image} from 'react-native';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,13 +9,18 @@ import { Entypo } from '@expo/vector-icons';
 import AppButton from '../components/AppButton';
 import axios from 'axios';
 import { useState , useEffect } from 'react';
-
+import { TextInput } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import AppTextInput from '../components/AppTextInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Profile = ({navigation},props) => {
+
     const [Name,setName]=useState("");
     const [Location,setLocation]=useState("");
     const [Email,setEmail]=useState("");
-    const [Phonenumber,setPhonenumber]=useState("");
+    const [Phonenumber,setPhonenumber]=useState("71560611");
     const [Account,setAccount]=useState("");
+    const [FinNumber,setFinNumber]=useState("");
     // useEffect(() => {
     //     axios.get('http://localhost:8000/api/user',{
     //         headers: {
@@ -44,65 +49,105 @@ const Profile = ({navigation},props) => {
     //     }
     //     )
     // },0.5)
-
-
-
-
+    let token=localStorage.getItem("token")
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    axios.get(
+        'http://localhost:8000/api/user',
+        config
+      ).then(res => {
+          console.log(res.data);
+          console.log(res.data.email)
+          setName({
+            Name:res.data.first_name + " " + res.data.last_name
+            })
+          setEmail({
+            email:res.data.email
+            })
+          setAccount({
+            account_balance:res.data.account_balance
+            })
+          setLocation({
+            location:res.data.location
+            })
+          setFinNumber({
+            Fin_number:res.data.Fin_number
+            })
+      })
+      .catch((error) => {
+            console.log(error)
+          });
+    const [Edit,setEdit]=useState(false);
     return (
-        <View style={styles.card}>
-            <View style={styles.container_Text}>
-              <Text style={styles.text}>User Info </Text>
-            </View>
-            <View style={styles.location}>
-                <Card.Title
-                // title="Mohammad Abdulaal"
-                title={Name.Name}
-                left={(props) => <FontAwesome {...props} name="user" color="black" size={35} />}
-                styles={styles.container}
+        <>
+            <View style={{marginLeft:-45 , marginTop:-65   }}>
+                <Image
+                source={require("../assets/Card_clear.png")}
+                style={{ width: "100%", height: 450,position:"relative"}}
                 />
+                <Text style={{ position:"absolute",top:"65%",left:"20%",fontWeight:'bold',fontSize:18 }}>{Name.Name}</Text>
+                <Text style={{ position:"absolute",top:"48%",left:"40%",fontWeight:'bold',fontSize:18 }}>{FinNumber.Fin_number}</Text>
             </View>
-            <View >
-                <Card.Title
-                // title={Location.location}
-                title="Beirut"
-                left={(props) => <Entypo {...props} name="location" color="black" size={30} />}
-                styles={styles.container}
-                />
-            </View>
-            <View style={styles.mail}>
-                <Card.Title
-                // title={Email.email}
-                left={(props) => <MaterialIcons {...props} name="email" color="black" size={35} />}
-                />
-            </View>
-            <View style={styles.phone}>
-                <Card.Title
-                // title={Phonenumber.phone_number}
-                title="71560611"
-                left={(props) => <FontAwesome {...props} name="phone-square" color="black" size={35}/>}
-                />
-            </View>
-            <Card.Title
-            // title= { Account.account_balance + '$' }
-            title="5000 $"
-            left={(props) => <FontAwesome5  {...props} name="money-bill" color="black" size={30} />}
-            />
-            <View style={styles.container_button}>
+            <View style={styles.container_button_edit}>
+                { !Edit &&
                 <AppButton
-                title="LOG OUT"
-                onPress={() => navigation.navigate('LandingScreen')}
-            //     onPress={(values) => {axios.get('http://localhost:8000/api/logout')
-            //     .then((res)=>{
-            //         if(res.status == 200){
-            //             console.log("bye")
-            //             navigation.navigate('LandingScreen')
-            //         }
-            //     })
-            // }}
-                style={styles.Button}
-                />
+                title={<Entypo name="edit" size={12} color="white" />}
+                onPress={() => setEdit(true)}
+                style={{ height :28,width:42 , marginLeft:290, marginTop : -80}}
+                /> }
             </View>
-        </View>
+           <View style={styles.card}>
+            { Edit &&
+            <View>
+            <AppTextInput
+                value={Phonenumber}
+                onChangeText={phonenumber => setPhonenumber(phonenumber)}
+                style={{ marginLeft:10 , width : 200 }}
+            />
+            <AppButton
+            title="Save"
+            onPress={()=> setEdit(false)}
+            style={{ width:130 , marginLeft:220 , marginTop:-60 }}
+            />
+            </View>
+            }
+                <View style={styles.phone}>
+                  <Card.Title
+                   // title={Phonenumber.phone_number}
+                   title={Phonenumber}
+                   left={(props) => <FontAwesome {...props} name="phone-square" color="black" size={35} onPress={()=>setEdit(true)}/>}
+                   />
+                </View>
+                <View style={styles.mail}>
+                   <Card.Title
+                    title={Email.email}
+                    // title="muhamed.abedlaal@gmail.com"
+                    left={(props) => <MaterialIcons {...props} name="email" color="black" size={35} />}
+                    />
+                </View>
+                <View >
+                  <Card.Title
+                   title={Location.location}
+                //    title="Beirut"
+                   left={(props) => <Entypo {...props} name="location" color="black" size={30} />}
+                   styles={styles.container}
+                   />
+                </View>
+                <Card.Title
+                title= { Account.account_balance + '$' }
+                // title= "$200"
+                left={(props) => <FontAwesome5  {...props} name="money-bill" color="black" size={30} />}
+                />
+                <View style={styles.container_button}>
+                  <AppButton
+                  title="LOG OUT"
+                  onPress={() => navigation.navigate('LandingScreen')}
+                  style={styles.Button}
+                  />
+                </View>
+            </View>
+        </>
 
     )
 }
@@ -120,7 +165,7 @@ const styles = StyleSheet.create({
         // flex:1,
         justifyContent:'center',
         alignItems:'center',
-        marginVertical:30,
+        marginVertical:-5,
         color:'black'
 
     },
@@ -131,6 +176,16 @@ const styles = StyleSheet.create({
         marginVertical:30
 
     },
+    container_Text:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+        marginVertical:30
+
+    },
+    container_button_edit:{
+
+    },
     text:{
         fontSize:20,
         fontWeight:'bold',
@@ -139,7 +194,7 @@ const styles = StyleSheet.create({
     card:{
         // backgroundColor:"#FFF",
         marginVertical:50,
-        marginTop:100
+        marginTop:-100
 
     },
     location:{

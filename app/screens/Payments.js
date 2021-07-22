@@ -1,24 +1,31 @@
-import React from 'react'
+import React , {useEffect , useState} from 'react'
+import { ActivityIndicator } from 'react-native'
 import { StyleSheet, Text, View , Button,ImageBackground , Image} from 'react-native'
 import AppButton from '../components/AppButton'
+import HeaderTransfer from '../components/HeaderTransfer'
+
 const Payments = ({navigation}) => {
     return (
-        // <ImageBackground
-        // source={require("../assets/digital-money-background.jpg")}
-        // style={styles.imageBackground}>
+        <>
         <View style={styles.container}>
+
             <Image
-            source={require("../assets/debit.png")}
-            style={{ width: 500, height: 500 }}
+            source={require("../assets/Card_clear.png")}
+            style={{ width: 450, height: 450,position:"absolute"}}
             />
-            <Text style={styles.text}>Press Here</Text>
+            <View style={styles.container_text}>
+                <Text style={styles.text_number}>0012-3344-5566-7788</Text>
+            </View>
+            {/* <Text style={styles.text_number}>0012-3344-5566-7788</Text> */}
+            <Text style={styles.text_name}>Mohammad Abdulaal</Text>
+            </View>
             <AppButton
             title='Pay'
             style={styles.button}
-            onPress={()=>navigation.navigate("PayScanner")}
+            // onPress={()=>navigation.navigate("PayScanner")}
+            onPress={()=>navigation.navigate("Payment")}
             />
-        </View>
-        // </ImageBackground>
+        </>
 
     )
 }
@@ -27,10 +34,11 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         alignItems:'center',
-
+        marginLeft:-35,
+        marginVertical:50
     },
     text:{
-        fontSize:20,
+        fontSize:35,
         fontWeight:'bold',
 
     },
@@ -39,9 +47,31 @@ const styles = StyleSheet.create({
     },
     button:{
         width:200,
-        fontWeight:'bold',
+        // fontWeight:'bold',
         // padding:12,
-        fontSize:15
+        fontSize:15,
+        marginLeft:80,
+        marginVertical:600,
+        position:"absolute"
+
+    },
+    text_number:{
+        marginLeft:80,
+        fontWeight:'bold',
+        fontSize:18
+
+    },
+    text_name:{
+        marginLeft:-45,
+        fontWeight:'bold',
+        fontSize:18,
+        marginTop:138,
+    },
+    container_card:{
+        marginHorizontal:-50
+    },
+    container_text:{
+        position:"absolute"
     }
 })
 export default Payments;

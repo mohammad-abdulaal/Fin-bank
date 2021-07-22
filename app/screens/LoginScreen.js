@@ -14,7 +14,7 @@ import axios from "axios";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 import {instance} from "../config/serverAPI"
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const loginInitialValues = {
   email: "",
   password: "",
@@ -39,13 +39,20 @@ export default function LoginScreen({navigation},props) {
           style={{ width: 400, height: 400 }}
           />
         </View>
-        {/* <Text style={styles.text}>FinBank</Text> */}
         <View style={styles.form}>
           <Formik
             initialValues={loginInitialValues}
             onSubmit={(values) => {axios.post('http://localhost:8000/api/login',values)
             .then((res)=>{
               if(res.status == 200){
+                // const storeData = async (res) => {
+                //   try {
+                //     await AsyncStorage.setItem('token', res.data.token)
+                //   } catch (e) {
+                //     // saving error
+                //   }
+                // }
+                localStorage.setItem('token',res.data.token)
                 navigation.navigate('FinBank')
               }
             })
@@ -90,10 +97,10 @@ export default function LoginScreen({navigation},props) {
                     <AppButton
                     title="Sign In"
                     // style={{ width:'70%' }}
-                    // onPress={(values) => {
-                      //   handleSubmit(values);
-                      // }}
-                    onPress={() =>navigation.navigate("FinBank")}
+                    onPress={(values) => {
+                        handleSubmit(values);
+                      }}
+                    // onPress={() =>navigation.navigate("FinBank")}
                     />
                   </View>
                 </View>

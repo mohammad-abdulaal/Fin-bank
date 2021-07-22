@@ -1,12 +1,13 @@
 import React , {useState} from 'react';
 import { View, StyleSheet ,Dimensions } from 'react-native'
+import colors from '../config/colors';
 import Tab from './Tab';
 
 const {width}=Dimensions.get('screen')
 const TabBar=({state,navigation}) => {
-    const [selected,setSelected] =useState('Home')
+    const [selected,setSelected] =useState('Accounts')
     const {routes} = state;
-    const renderColor =(currentTab)=>(currentTab===selected ? 'blue' : '#808080');
+    const renderColor =(currentTab)=>(currentTab===selected ? colors.blue : '#808080');
     const handlePress =(activeTab,index) => {
         if (state.index !== index){
             setSelected(activeTab);

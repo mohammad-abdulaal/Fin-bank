@@ -8,11 +8,10 @@ export default function CurrencySelector({ onChange, onPress , props}) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "Riyal Qatar(QAR)" , value: "Riyal Qatar(QAR)" },
-    { label: "Omani Riyal(OMR)", value: "Omani Riyal(OMR)" },
-    { label: "Dirham Emirati(AED)", value: "Dirham Emirati(AED)" },
-    { label: "Euro(€)", value: "Euro(€)" },
-
+    { label: "Riyal Qatar (QAR)" , value: "Riyal Qatar (QAR)" },
+    { label: "Omani Riyal (OMR)", value: "Omani Riyal (OMR)" },
+    { label: "United Arab Emirates Dirham (AED)", value: "United Arab Emirates Dirham (AED)" },
+    { label: "Euro (€)", value: "Euro (€)" },
   ]);
 
   return (
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
   selector: {
     backgroundColor: colors.lightBlue,
     borderColor: "transparent",
-    borderRadius: 30 ,
+    borderRadius: 20 ,
     height: 60,
     width:350,
     marginVertical: 6,

@@ -5,7 +5,7 @@ import colors from "../config/colors";
 
 function AppButton({ title, style, onPress }) {
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress} >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    textTransform: "uppercase",
+    // textTransform: "uppercase",
     fontWeight: "bold",
   },
 });

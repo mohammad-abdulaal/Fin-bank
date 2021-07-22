@@ -4,8 +4,11 @@ import test from '../screens/test'
 import TabBar from '../components/TabBar'
 import Accounts from "../screens/Accounts";
 import Savings from "../screens/Savings";
-import Payments from "../screens/Payments";
+
 import Profile from "../screens/Profile";
+import transfer from "../screens/test";
+import Transfer from "../screens/Transfer";
+import PayPage from "../screens/PayPage";
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
     return (
@@ -17,25 +20,20 @@ const TabNavigator = () => {
                 options={{ title:'Accounts' }}
             />
             <Tab.Screen
+                name="Pay"
+                component={PayPage}
+                initialParams={{ icon: "payment" }}
+            />
+            <Tab.Screen
                 name="Wallet"
                 component={Savings}
                 initialParams={{ icon: "account-balance-wallet" }}
-            />
-            <Tab.Screen
-                name="Pay"
-                component={Payments}
-                initialParams={{ icon: "payments" }}
             />
             <Tab.Screen
                 name="Profile"
                 component={Profile}
                 initialParams={{ icon: "person" }}
             />
-            {/* <Tab.Screen
-                name="test"
-                component={test}
-                initialParams={{ icon: "notification" }}
-            /> */}
         </Tab.Navigator>
     );
 };

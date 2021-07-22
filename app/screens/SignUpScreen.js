@@ -22,24 +22,31 @@ import IdVerification from "../components/IdVerification";
 import { ImageBackground } from "react-native";
 import { SafeAreaView } from "react-native";
 import AppTextInput1 from "../components/AppTextInput1";
-
-const stepper = ["Information", "ID Verification", "Finished"];
+import axios from 'axios';
+const stepper = ["Information", "ID Verification","Approved"];
 const formInitialValue = {
   email: "",
   password: "",
-  firstName: "",
-  lastName: "",
-  phonenumber: "",
+  first_name: "",
+  last_name: "",
+  phone_number: "",
   location: "",
+  passport_picture:"",
+  Fin_number:"0000",
+  account_balance:200,
+  is_approved:0
 };
 
 export default function SignUpScreen({navigation}) {
   const [step, setStep] = useState(0);
   const [imageUri, setImageUri] = useState();
-
+  formInitialValue.passport_picture=imageUri;
   const handleNextButton = () => {
     if (step > 2) return;
     setStep(step + 1);
+    if (step===1){
+      axios.post("http://localhost:8000/api/signup",formInitialValue)
+    }
   };
 
   const handleBackButton = () => {
@@ -51,14 +58,15 @@ export default function SignUpScreen({navigation}) {
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().min(8).label("Password"),
     location: Yup.string().required().label("Location"),
-    firstName: Yup.string().required().label("First name"),
-    lastName: Yup.string().required().label("Last name"),
-    Account: Yup.string().required().label("Account Balance"),
-    phonenumber: Yup.string()
+    first_name: Yup.string().required().label("First name"),
+    last_name: Yup.string().required().label("Last name"),
+
+    // Account: Yup.string().required().label("Account Balance"),
+    phone_number: Yup.string()
       .matches(/[0-9]{8}/, "Phone number must be 8 digits")
       .label("Phone number"),
   });
-
+  const [nextDisabled,setNextDisabled]=useState(true)
   const handleSetIdImage = (image) => {
     setImageUri(image);
   };
@@ -70,6 +78,13 @@ export default function SignUpScreen({navigation}) {
           initialValues={formInitialValue}
           onSubmit={(values, formikBag) => {
             console.log(values);
+            formInitialValue.email=values.email;
+            formInitialValue.password=values.password;
+            formInitialValue.location=values.location;
+            formInitialValue.first_name=values.first_name;
+            formInitialValue.last_name=values.last_name;
+            formInitialValue.phone_number=values.phone_number;
+
             handleNextButton();
           }}
           validationSchema={validationSchema}
@@ -108,46 +123,45 @@ export default function SignUpScreen({navigation}) {
               <AppTextInput
                 placeholder="First Name"
                 icon="account"
-                onChangeText={handleChange("firstName")}
+                onChangeText={handleChange("first_name")}
                 style={{ width: "100%" }}
-                onBlur={() => setFieldTouched("firstName")}
+                onBlur={() => setFieldTouched("first_name")}
               />
-              {touched.firstName && errors.firstName && (
-                <Text style={styles.error}>{errors.firstName}</Text>
+              {touched.first_name && errors.first_name && (
+                <Text style={styles.error}>{errors.first_name}</Text>
               )}
               <AppTextInput
                 placeholder="Last Name"
                 icon="account"
-                onChangeText={handleChange("lastName")}
+                onChangeText={handleChange("last_name")}
                 style={{ width: "100%" }}
-                onBlur={() => setFieldTouched("lastName")}
+                onBlur={() => setFieldTouched("last_name")}
               />
-              {touched.lastName && errors.lastName && (
-                <Text style={styles.error}>{errors.lastName}</Text>
+              {touched.last_name && errors.last_name && (
+                <Text style={styles.error}>{errors.last_name}</Text>
               )}
               <AppTextInput
                 placeholder="Phone Number"
                 icon="phone"
-                onChangeText={handleChange("phonenumber")}
+                onChangeText={handleChange("phone_number")}
                 style={{ width: "100%" }}
-                onBlur={() => setFieldTouched("phonenumber")}
+                onBlur={() => setFieldTouched("phone_number")}
                 keyboardType="numeric"
               />
-              {touched.phonenumber && errors.phonenumber && (
-                <Text style={styles.error}>{errors.phonenumber}</Text>
+              {touched.phone_number && errors.phone_number && (
+                <Text style={styles.error}>{errors.phone_number}</Text>
               )}
-              <AppTextInput
+              {/* <AppTextInput
                 placeholder="Account Balance in US Dollars"
                 icon="bank"
                 onChangeText={handleChange("Account")}
                 style={{ width: "100%" }}
                 onBlur={() => setFieldTouched("Account")}
                 keyboardType="numeric"
-              />
-              {touched.account && errors.acount && (
+              /> */}
+              {/* {touched.account && errors.acount && (
                 <Text style={styles.error}>{errors.account}</Text>
-              )}
-
+              )} */}
                 <AppSelector
                 onChange={handleChange("location")}
                 onPress={() => setFieldTouched("location")}
@@ -156,17 +170,7 @@ export default function SignUpScreen({navigation}) {
               {touched.location && errors.location && (
               <Text style={styles.error}>{errors.location}</Text>
               )}
-              {/* <AppTextInput1
-                placeholder="Location"
-                icon="location"
-                onChangeText={handleChange("Location")}
-                style={{ width: "100%" }}
-                onBlur={() => setFieldTouched("Location")}
 
-              />
-             {touched.location && errors.location && (
-                <Text style={styles.error}>{errors.location}</Text>
-              )} */}
               {step <= 0 ? (
                 <AppButton
                   title="Next"
@@ -214,12 +218,13 @@ export default function SignUpScreen({navigation}) {
               alignSelf: "center",
             }}
           >
+
             {!imageUri ? (
               <IdVerification handleSetIdImage={handleSetIdImage} />
             ) : (
               <Image
                 source={{ uri: imageUri }}
-                style={{ width: 300, height: 300 }}
+                style={{ width: 350, height: 350 }}
               />
             )}
           </View>
@@ -240,6 +245,10 @@ export default function SignUpScreen({navigation}) {
             <AppButton
               title="Next"
               onPress={() => {
+                setTimeout(()=>{
+                  setNextDisabled(false)
+                  handleNextButton()
+                }, 2500)
                 if (imageUri) handleNextButton();
                 return ;
                 // handleSubmit(values);
@@ -252,12 +261,46 @@ export default function SignUpScreen({navigation}) {
       if (step === 2)
       return (
         <>
+          {/* <ImageBackground
+          source={require('../assets/animation_500_kpzapyyu.gif')}
+          style={{ width: 500, height: 500,flex:1,marginLeft:-100}}
+          > */}
+          <View style={styles.Intro1}>
+            <View style={styles.Intro}>
+              <Text style={styles.text}>Your form has been sent to admin</Text>
+            </View>
+            <View
+            style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            marginRight:-40
+            }}>
+              {nextDisabled==false?(<AppButton
+              title="Next"
+              onPress={() => {
+                if (imageUri) handleNextButton();
+                return ;
+                // handleSubmit(values);
+              }}
+              style={{ width: "40%" }}
+              />):null
+              }
+
+            </View>
+          </View>
+          {/* </ImageBackground> */}
+        </>
+      );
+      if (step === 3)
+      return (
+        <>
           <ImageBackground
           source={require('../assets/animation_500_kpzapyyu.gif')}
           style={{ width: 500, height: 500,flex:1,marginLeft:-100}}
           >
             <View style={styles.Intro}>
-              <Text style={styles.text}>Thanks For Choosing Us !</Text>
+              <Text style={styles.text}>Thank you for choosing us!</Text>
             </View>
             <View
             style={{
@@ -267,7 +310,7 @@ export default function SignUpScreen({navigation}) {
             marginRight:-40
             }}>
               <AppButton
-              title="Lets Go"
+              title="Let's Go"
               onPress={() => {
                 navigation.navigate('FinBank')
                 // handleSubmit(values);
@@ -277,7 +320,7 @@ export default function SignUpScreen({navigation}) {
             </View>
           </ImageBackground>
         </>
-      );
+      )
 
   };
 
@@ -337,6 +380,10 @@ const styles = StyleSheet.create({
   Intro:{
     marginVertical:20
   },
+  Intro1:{
+    marginVertical:150,
+    marginLeft:-30
+  },
   text: {
     position: "relative",
     alignSelf: "center",
@@ -345,4 +392,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginRight:-40
   },
+  Headingtext:{
+    marginLeft:15
+  }
 });
