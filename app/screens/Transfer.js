@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 // import all the components we are going to use
-import { SafeAreaView, StyleSheet, Text, View , CheckBox , StatusBar , Platform } from 'react-native';
-
+import { SafeAreaView, StyleSheet, Text, View , CheckBox, Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import SearchableDropdown component
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import AppButton from '../components/AppButton';
@@ -11,17 +11,35 @@ import { ImageBackground } from 'react-native';
 import * as Yup from "yup";
 import { Image } from 'react-native';
 import { BackgroundImage } from 'react-native-elements/dist/config';
-import HeaderTransfer from '../components/HeaderTransfer';
-const Transfer = ({route, navigation}) => {
-  const [User,setUser] = useState({
-    name: "",
-    value:""
-  });
+import axios from 'axios';
 
-  const handleName = (textValue) => {
+const transfer = ({route, navigation}) => {
+  const initialValue = {
+    number : "",
+    value: ""
+  }
+  const [User,setUser] = useState(initialValue);
+  const [modalActive, setModalActive] = useState(false);
+  // const getData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('token')
+  //     if(value !== null) {
+  //      alert(value)
+  //     }
+  //     else{
+  //         console.log("hi")
+  //     }
+  //   } catch(e) {
+  //     // error reading value
+  //   }
+
+  // }
+  let token=localStorage.getItem("token")
+
+  const handleNumber = (textValue) => {
     setUser((prevUser) => ({
       ...prevUser,
-      name: textValue,
+      number: textValue,
     }));
     if (textValue ===""){
       alert("Please Fill User")
@@ -34,28 +52,62 @@ const Transfer = ({route, navigation}) => {
       value: textValue,
     }));
   }
+  useEffect(() => {
+    console.log("testing params",route)
+    setUser((prevUser)=>({
+      ...prevUser,
+      value:route.params.amountToPay
+    }))
+
+  },[]);
+  const handleTransferButton = ()=>{
+    setModalActive(true)
+    setTimeout(()=>{
+      setModalActive(false)
+       Alert.alert("Congratulation","Money Transfered!",
+       [
+      { text: "OK", onPress: () =>  navigation.navigate("FinBank")},
+       ]
+       );
+    },5000)
+    let account=User.number,
+    balance=User.value;
+  const config = {
+      headers: { Authorization: `Bearer ${token}` }
+  };
+
+  const bodyParameters = {
+    account: account,
+    balance: balance
+  };
+
+  axios.post(
+    'http://localhost:8000/api/transfer',
+    bodyParameters,
+    config
+  ).then(console.log).catch(console.log);
+
+  }
+  console.log("value",User.value)
   return (
-    <SafeAreaView style={styles.container}>
-        <HeaderTransfer/>
+
+      <SafeAreaView style={styles.container}>
         <View style={styles.container}>
-          {/* <Text style={styles.titleText}>
-          Transfer Money
-          </Text> */}
           <Text style={styles.headingText}>
-          Fin Account Number
+          Transfer To:
           </Text>
           <View>
             <AppTextInput
-            placeholder=""
-            onChangeText={handleName}
+            placeholder="FinBank Account Number"
+            onChangeText={handleNumber}
             value={User.name}
             style={styles.textinput}
             />
           </View>
           <Text style={styles.headingText}>
-          Amount Transfer
+          Transfer Amount ($):
           </Text>
-          <View style={styles.hi4}>
+          <View style={styles.handleAmount}>
             <AppTextInput
             placeholder=""
             onChangeText={handleAmount}
@@ -65,24 +117,34 @@ const Transfer = ({route, navigation}) => {
           </View>
           <AppButton
           title='Transfer'
-          onPress={() => alert("Money Transfer Is Successfully Done")}
+          onPress={handleTransferButton}
           />
+
         </View>
+        <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalActive}
+        onRequestClose={() => {
+          console.warn("closed");
+        }}
+        >
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.75)'}}>
+            <BackgroundImage
+             source={require('../assets/61384-money-transaction.gif')}
+             style={{  width: 280, height:150,marginTop:300, flex: 1}}
+            />
+          </View>
+        </Modal>
 
-          <BackgroundImage
-          source={require('../assets/61384-money-transaction.gif')}
-          style={{  width: 280, height:150,marginLeft:30,marginTop:-10, flex: 0.75}}
-          />
-
-    </SafeAreaView>
+      </SafeAreaView>
   );
 };
 
-export default Transfer;
+export default transfer;
 
 const styles = StyleSheet.create({
   hi:{
-    // backgroundColor:0,
     marginVertical:250,
     marginLeft:15
   },
@@ -90,14 +152,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // backgroundColor: "#f7f7f7",
+
   },
   container1:{
    borderRadius:20
   },
   currency:{
-    // backgroundColor:0,
     overflow: 'visible',
 
   },
@@ -111,11 +171,9 @@ const styles = StyleSheet.create({
   },
   headingText: {
     padding: 8,
-    // textAlign:'center'
     marginVertical:-10,
-
     fontSize:15,
-    fontWeight:'bold',
+    fontWeight:'bold'
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -131,24 +189,18 @@ const styles = StyleSheet.create({
     margin: 5,
     marginVertical:6
   },
-  hi4:{
+  handleAmount:{
     marginVertical:5,
-    // padding:10,
     marginLeft:0
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  text: {
+    fontSize:15,
+    fontWeight:'bold',
   }
 });
-
-{/* <View style={styles.checkboxContainer}>
-          <CheckBox
-          value={isSelected1}
-          onValueChange={setSelection1}
-          style={styles.checkbox}
-          />
-          <Text style={styles.label}>User</Text>
-          <CheckBox
-          value={isSelected2}
-          onValueChange={setSelection2}
-          style={styles.checkbox}
-          />
-          <Text style={styles.label}>Goverment Payments</Text>
-          </View> */}

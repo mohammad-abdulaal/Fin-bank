@@ -55,7 +55,7 @@ export default function LoginScreen({navigation},props) {
                 localStorage.setItem('token',res.data.token)
                 navigation.navigate('FinBank')
               }
-            })
+            }).catch(alert(error))
           }}
             validationSchema={validationSchema}
 
@@ -95,7 +95,7 @@ export default function LoginScreen({navigation},props) {
                   <Text style={styles.error}>{errors.password}</Text>)}
                   <View style={styles.buttons1}>
                     <AppButton
-                    title="Sign In"
+                    title="Log In"
                     // style={{ width:'70%' }}
                     onPress={(values) => {
                         handleSubmit(values);

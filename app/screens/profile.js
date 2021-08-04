@@ -13,6 +13,8 @@ import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import AppTextInput from '../components/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from 'react-native';
+
 const Profile = ({navigation},props) => {
 
     const [Name,setName]=useState("");
@@ -21,135 +23,122 @@ const Profile = ({navigation},props) => {
     const [Phonenumber,setPhonenumber]=useState("71560611");
     const [Account,setAccount]=useState("");
     const [FinNumber,setFinNumber]=useState("");
-    // useEffect(() => {
-    //     axios.get('http://localhost:8000/api/user',{
-    //         headers: {
-    //             'Authorization' : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzZiNzgyN2JhZTc1NzJiNGExYzk4MjQxOTEwZjkzMjRiZjQ5ZWE0ZDFlMjAxZGRjYjdhZmFiMDI3NzQ1YWI0OTBhNWRhOGM2NGI1NTk5YjMiLCJpYXQiOjE2MjI2Mjg2NDEsIm5iZiI6MTYyMjYyODY0MSwiZXhwIjoxNjU0MTY0NjQxLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.aCgrIaIMAgLfs8wwXXrAdfnZWkSeZV9G_oEtvIZir-CD9drLAJnZA8uMPPJ4EH098octlSempk3JNJM7X3s6F8jVHN0x3qZX6lRcUWjbBb_ioZAMnmRO_H59R3DpIMHDmDMCGGczQQOB6o_-OzZ5wb_J8EMkF3hpLPnmAbQjMZFa9m9ilG71kUBc94GOvEyAn9fzCzlOmRPeJu0F0dXiDJWuHEEoFVLeH4KL4YejOy9ZqBloFQ8GRSsQ0OYMuZI3rUI3I0pYT3UUEt1WD2QZNEJrbXGxyVe1T1G2v0WbpzodVGrFrActUmZgJ82sHr4tF1eBNU-Ud2pIh9qaw9aOVK2lP5Hyq4AeGoCnR7pezQVZ9bMt4eR46qXyIiew9RWjEvTp-i1HslWlHssQKI1PrxkmVJhCeIzhWebBh8sK1O6owE7qgELveUZKr8ddFhNNO_dXeITUaQ5MKWa4RrRfWCL6ZNBrtNnFirg7Fm2o3EH90NeLCnfUTm8-Vk9ds9vTlDbc2MgT8Q-OI2I9tY5pGr0YEaUnci_lY5xyXwl26CkYvozQmKraLpMQD_WX2xthM9ihowpuuRoFr8eyIC7iMyNPhq_bwN84VVhdUn2GoKfEdZzjSqZNZ7q81v_xZB6dmnkO0Kkm13Dxumd0rc9JE50L3aIs5NRgJgz-o2TjzuU'
-    //         }
-    //     })
-    //     .then((res)=>{
-    //         console.log('user',res.data)
-    //         console.log(res.data.id)
-    //         console.log(res.data.first_name)
-    //         setName({
-    //             Name:res.data.first_name + " " + res.data.last_name
-    //         })
-    //         setLocation({
-    //             location:res.data.location
-    //         })
-    //         setEmail({
-    //             email:res.data.email
-    //         })
-    //         setPhonenumber({
-    //             phone_number:res.data.phone_number
-    //         })
-    //         setAccount({
-    //             account_balance:res.data.account_balance
-    //         })
-    //     }
-    //     )
-    // },0.5)
+    const [loading,setLoading]=useState(true);
     let token=localStorage.getItem("token")
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-    axios.get(
-        'http://localhost:8000/api/user',
-        config
-      ).then(res => {
-          console.log(res.data);
-          console.log(res.data.email)
-          setName({
-            Name:res.data.first_name + " " + res.data.last_name
-            })
-          setEmail({
-            email:res.data.email
-            })
-          setAccount({
-            account_balance:res.data.account_balance
-            })
-          setLocation({
-            location:res.data.location
-            })
-          setFinNumber({
-            Fin_number:res.data.Fin_number
-            })
-      })
-      .catch((error) => {
-            console.log(error)
-          });
+    useEffect(()=>{
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        axios.get(
+            'http://localhost:8000/api/user',
+            config
+          ).then(res => {
+              setName({
+                Name:res.data.first_name + " " + res.data.last_name
+                })
+              setEmail({
+                email:res.data.email
+                })
+              setAccount({
+                account_balance:res.data.account_balance
+                })
+              setLocation({
+                location:res.data.location
+                })
+              setFinNumber({
+                Fin_number:res.data.Fin_number
+                })
+              setLoading(false)
+          })
+          .catch((error) => {
+                console.log(error)
+              });
+        //   setLoading(false)
+    },[])
+    console.log(loading)
     const [Edit,setEdit]=useState(false);
-    return (
-        <>
-            <View style={{marginLeft:-45 , marginTop:-65   }}>
-                <Image
-                source={require("../assets/Card_clear.png")}
-                style={{ width: "100%", height: 450,position:"relative"}}
+    if(loading){
+        console.log("hi")
+        return(
+                <ActivityIndicator
+                size={'large'}
                 />
-                <Text style={{ position:"absolute",top:"65%",left:"20%",fontWeight:'bold',fontSize:18 }}>{Name.Name}</Text>
-                <Text style={{ position:"absolute",top:"48%",left:"40%",fontWeight:'bold',fontSize:18 }}>{FinNumber.Fin_number}</Text>
-            </View>
-            <View style={styles.container_button_edit}>
-                { !Edit &&
-                <AppButton
-                title={<Entypo name="edit" size={12} color="white" />}
-                onPress={() => setEdit(true)}
-                style={{ height :28,width:42 , marginLeft:290, marginTop : -80}}
-                /> }
-            </View>
-           <View style={styles.card}>
-            { Edit &&
-            <View>
-            <AppTextInput
-                value={Phonenumber}
-                onChangeText={phonenumber => setPhonenumber(phonenumber)}
-                style={{ marginLeft:10 , width : 200 }}
-            />
-            <AppButton
-            title="Save"
-            onPress={()=> setEdit(false)}
-            style={{ width:130 , marginLeft:220 , marginTop:-60 }}
-            />
-            </View>
-            }
-                <View style={styles.phone}>
-                  <Card.Title
-                   // title={Phonenumber.phone_number}
-                   title={Phonenumber}
-                   left={(props) => <FontAwesome {...props} name="phone-square" color="black" size={35} onPress={()=>setEdit(true)}/>}
-                   />
-                </View>
-                <View style={styles.mail}>
-                   <Card.Title
-                    title={Email.email}
-                    // title="muhamed.abedlaal@gmail.com"
-                    left={(props) => <MaterialIcons {...props} name="email" color="black" size={35} />}
-                    />
-                </View>
-                <View >
-                  <Card.Title
-                   title={Location.location}
-                //    title="Beirut"
-                   left={(props) => <Entypo {...props} name="location" color="black" size={30} />}
-                   styles={styles.container}
-                   />
-                </View>
-                <Card.Title
-                title= { Account.account_balance + '$' }
-                // title= "$200"
-                left={(props) => <FontAwesome5  {...props} name="money-bill" color="black" size={30} />}
-                />
-                <View style={styles.container_button}>
-                  <AppButton
-                  title="LOG OUT"
-                  onPress={() => navigation.navigate('LandingScreen')}
-                  style={styles.Button}
-                  />
-                </View>
-            </View>
-        </>
 
-    )
+
+        )
+    }
+    else {
+        console.log("ana")
+        return (
+            <>
+
+                <View style={{marginLeft:-45 , marginTop:-65   }}>
+                    <Image
+                    source={require("../assets/Card_clear.png")}
+                    style={{ width: "100%", height: 450,position:"relative"}}
+                    />
+                    <Text style={{ position:"absolute",top:"65%",left:"20%",fontWeight:'bold',fontSize:18 }}>{Name.Name}</Text>
+                    <Text style={{ position:"absolute",top:"48%",left:"40%",fontWeight:'bold',fontSize:18 }}>{FinNumber.Fin_number}</Text>
+                </View>
+                <View style={styles.container_button_edit}>
+                    { !Edit &&
+                    <AppButton
+                    title={<Entypo name="edit" size={12} color="white" />}
+                    onPress={() => setEdit(true)}
+                    style={{ height :28,width:42 , marginLeft:290, marginTop : -80}}
+                    /> }
+                </View>
+               <View style={styles.card}>
+                { Edit &&
+                <View>
+                <AppTextInput
+                    value={Phonenumber}
+                    onChangeText={phonenumber => setPhonenumber(phonenumber)}
+                    style={{ marginLeft:10 , width : 200 }}
+                />
+                <AppButton
+                title="Save"
+                onPress={()=> setEdit(false)}
+                style={{ width:130 , marginLeft:220 , marginTop:-60 }}
+                />
+                </View>
+                }
+                    <View style={styles.phone}>
+                      <Card.Title
+                       title={Phonenumber}
+                       left={(props) => <FontAwesome {...props} name="phone-square" color="black" size={35} onPress={()=>setEdit(true)}/>}
+                       />
+                    </View>
+                    <View style={styles.mail}>
+                       <Card.Title
+                        title={Email.email}
+                        left={(props) => <MaterialIcons {...props} name="email" color="black" size={35} />}
+                        />
+                    </View>
+                    <View >
+                      <Card.Title
+                       title={Location.location}
+                       left={(props) => <Entypo {...props} name="location" color="black" size={30} />}
+                       styles={styles.container}
+                       />
+                    </View>
+                    <Card.Title
+                    title= { Account.account_balance + '$' }
+                    left={(props) => <FontAwesome5  {...props} name="money-bill" color="black" size={30} />}
+                    />
+                    <View style={styles.container_button}>
+                      <AppButton
+                      title="LOG OUT"
+                      onPress={() => navigation.navigate('LandingScreen')}
+                      style={styles.Button}
+                      />
+                    </View>
+                </View>
+            </>
+
+
+        )
+    }
 }
 const styles = StyleSheet.create({
     container:{
@@ -208,6 +197,10 @@ const styles = StyleSheet.create({
     },
     Button:{
         width:160
+    },
+    hi: {
+        width: 100,
+        height: 100
     }
 }
 )

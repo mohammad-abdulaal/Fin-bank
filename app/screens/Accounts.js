@@ -108,7 +108,7 @@ export default class Accounts extends Component {
           marginBottom: 20,
           marginTop: 20,
         },
-        test:{
+        card_currency:{
           backgroundColor:'#FFF',
           borderRadius: 10 ,
            width:350,
@@ -145,20 +145,20 @@ export default class Accounts extends Component {
           backgroundColor:0,
           marginVertical:10,
         },
-        hi:{
+        open_account:{
           width:160,
 
         },
-        hi2:{
+        suggest_currency:{
           width:180
 
         },
-        hi3:{
+        View_image:{
           marginLeft:-100,
           marginVertical:-200,
           marginTop:-250
         },
-        hi4:{
+        currency_select:{
           marginVertical:5,
           padding:10,
           marginLeft:-10
@@ -172,7 +172,7 @@ export default class Accounts extends Component {
       const entries = this.state.data.map((entry, i) => {
         return (
 
-            <View style={styles.test} key={i}>
+            <View style={styles.card_currency} key={i}>
                 <Card>
                   <Card.Title
                   title={entry.currency_name}
@@ -193,7 +193,7 @@ export default class Accounts extends Component {
         <View>
           <ScrollView >
           <View style={styles.container_Text}>
-            <View style={styles.hi3}>
+            <View style={styles.View_image}>
               <Image
               source={require("../assets/finbank_logo.png")}
               style={{ width: 800, height: 400 }}
@@ -205,7 +205,7 @@ export default class Accounts extends Component {
           {this.state.user.id ? (
 
             <View >
-              <View style={styles.hi4}  >
+              <View style={styles.currency_select}  >
                 <CurrencySelector
                 style={styles.currency}
                 onChange={this.onCurrencySelectorChange}
@@ -228,14 +228,14 @@ export default class Accounts extends Component {
                   value={this.props.items}
                   title="Check Account"
                   color="#1C8FCB"
-                  style={styles.hi}
+                  style={styles.open_account}
                 />
                 <AppButton
                   onPress={() => Linking.openURL('mailto:marc.finbank@gmail.com?subject=SuggestCurrency&body=Hello, \n Can you please add the following currency to the application? \n Currency to add:') }
                   value={this.props.items}
                   title="Suggest Currency"
                   color="#1C8FCB"
-                  style={styles.hi2}
+                  style={styles.suggest_currency}
                 />
 
               </View>
@@ -253,8 +253,6 @@ export default class Accounts extends Component {
       this.setState({
           currency_name: value,
         })
-        // console.log(value)
-        // console.log("hi")
     }
 
 

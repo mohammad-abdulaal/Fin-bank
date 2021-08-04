@@ -44,10 +44,7 @@ export default function TransactionList({ addTransaction,isSelected1,isSelected2
   const clearForm = () => {
     setTransaction({ name: "", amount: "" });
   };
-  const onCurrencySelectorChange = (value,index) =>{
-
-    console.log(value)
-  }
+  let token=localStorage.getItem("token")
   return (
     <View style={styles.box}>
       <Text style={[heading.h4, heading.subTitle]}>Add New Transaction</Text>
@@ -71,17 +68,12 @@ export default function TransactionList({ addTransaction,isSelected1,isSelected2
          placeholder="Enter Name"
          onChangeText={handleNameChange}
          value={transaction.name}
-        //  style={{ width:320 }}
          />
-         {/* <AmountSelector
-         onChange={onCurrencySelectorChange}
-         /> */}
          <AppTextInput
          placeholder="Enter Amount"
          keyboardType="numeric"
          onChangeText={handleAmountChange}
          value={transaction.amount}
-        //  style={{ width:320 }}
          />
       </View>
       :
@@ -90,17 +82,12 @@ export default function TransactionList({ addTransaction,isSelected1,isSelected2
          placeholder="Enter Name"
          onChangeText={handleNameChange}
          value={transaction.name}
-        //  style={{ width:320 }}
          />
-         {/* <AmountSelector
-          onChange={onCurrencySelectorChange}
-         /> */}
          <AppTextInput
          placeholder="Enter Amount"
          keyboardType="numeric"
          onChangeText={handleAmountChange}
          value={transaction.amount}
-        //  style={{ width:320 }}
          />
       </View>
        }
@@ -109,9 +96,23 @@ export default function TransactionList({ addTransaction,isSelected1,isSelected2
           clearForm();
           addTransaction(e,transaction);
           onCurrencySelectorChange(e,sign)
+          const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const bodyParameters = {
+          transaction:transaction.name ,
+          amount: transaction.amount,
+          category:category,
+        };
+
+        axios.post(
+          'http://localhost:8000/api/wallet',
+          bodyParameters,
+          config
+        ).then(console.log).catch(console.log);
       }}
       title="Add transaction"
-      // style={{ marginLeft:8 }}
       />
     </View>
   );

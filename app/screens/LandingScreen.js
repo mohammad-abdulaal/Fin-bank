@@ -7,6 +7,7 @@ export default function LandingScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>FinBank</Text>
+
       <ImageBackground
         source={require("../assets/landing-page-assets/financial-services.gif")}
         style={styles.imageBackground}
@@ -20,6 +21,7 @@ export default function LandingScreen({ navigation }) {
           title="Register"
           style={styles.registerButton}
           onPress={() => navigation.navigate("Register")}
+          // onPress={() => alert("hello")}
         />
       </ImageBackground>
     </View>

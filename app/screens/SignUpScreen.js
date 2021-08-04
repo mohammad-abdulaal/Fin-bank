@@ -23,7 +23,7 @@ import { ImageBackground } from "react-native";
 import { SafeAreaView } from "react-native";
 import AppTextInput1 from "../components/AppTextInput1";
 import axios from 'axios';
-const stepper = ["Information", "ID Verification","Approved"];
+const stepper = ["Information", "ID Verification","Finished"];
 const formInitialValue = {
   email: "",
   password: "",
@@ -245,10 +245,6 @@ export default function SignUpScreen({navigation}) {
             <AppButton
               title="Next"
               onPress={() => {
-                setTimeout(()=>{
-                  setNextDisabled(false)
-                  handleNextButton()
-                }, 2500)
                 if (imageUri) handleNextButton();
                 return ;
                 // handleSubmit(values);
@@ -266,9 +262,9 @@ export default function SignUpScreen({navigation}) {
           style={{ width: 500, height: 500,flex:1,marginLeft:-100}}
           > */}
           <View style={styles.Intro1}>
-            <View style={styles.Intro}>
-              <Text style={styles.text}>Your form has been sent to admin</Text>
-            </View>
+            {/* <View style={styles.Intro}>
+              <Text style={styles.text}>Your form has been sent {"\n"} to admin for approvel</Text>
+            </View> */}
             <View
             style={{
             flexDirection: "row",
@@ -276,7 +272,7 @@ export default function SignUpScreen({navigation}) {
             justifyContent: "space-evenly",
             marginRight:-40
             }}>
-              {nextDisabled==false?(<AppButton
+              <AppButton
               title="Next"
               onPress={() => {
                 if (imageUri) handleNextButton();
@@ -284,8 +280,8 @@ export default function SignUpScreen({navigation}) {
                 // handleSubmit(values);
               }}
               style={{ width: "40%" }}
-              />):null
-              }
+              />
+
 
             </View>
           </View>
@@ -300,7 +296,7 @@ export default function SignUpScreen({navigation}) {
           style={{ width: 500, height: 500,flex:1,marginLeft:-100}}
           >
             <View style={styles.Intro}>
-              <Text style={styles.text}>Thank you for choosing us!</Text>
+              <Text style={styles.text}>Thank you for choosing us !</Text>
             </View>
             <View
             style={{
@@ -309,14 +305,14 @@ export default function SignUpScreen({navigation}) {
             justifyContent: "space-evenly",
             marginRight:-40
             }}>
-              <AppButton
+              {/* <AppButton
               title="Let's Go"
               onPress={() => {
-                navigation.navigate('FinBank')
+                navigation.navigate('LandingScreen')
                 // handleSubmit(values);
               }}
               style={{ width: "40%" }}
-              />
+              /> */}
             </View>
           </ImageBackground>
         </>

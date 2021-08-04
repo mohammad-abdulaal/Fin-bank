@@ -1,13 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import test from '../screens/test'
+import test from '../screens/Transfer'
 import TabBar from '../components/TabBar'
 import Accounts from "../screens/Accounts";
 import Savings from "../screens/Savings";
 
 import Profile from "../screens/Profile";
-import transfer from "../screens/test";
-import Transfer from "../screens/Transfer";
+
 import PayPage from "../screens/PayPage";
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {

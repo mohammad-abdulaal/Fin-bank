@@ -5,7 +5,6 @@ import { heading } from "../config/Header";
 import { numberWithCommas } from "../utils/Format";
 
 export default function Balance({ transactions , balance }) {
-  // let balance = 0;
   transactions.map((transaction) => (balance += +transaction.amount ));
 }
 

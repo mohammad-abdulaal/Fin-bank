@@ -20,15 +20,15 @@ import PayScanner from "./app/components/PayScanner";
 import api from "./app/config/serverAPI";
 import { LogBox  } from 'react-native';
 import PayPage from "./app/screens/PayPage";
-import test from "./app/screens/test";
+import test from "./app/screens/Transfer";
+import transfer from "./app/screens/Transfer";
 
 
 
-// LogBox.ignoreLogs(["VirtualizedLists should never be nested inside plain ScrollViews with the same orientation"])
+LogBox.ignoreLogs(["VirtualizedLists should never be nested inside plain ScrollViews with the same orientation"])
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
-  // const [amount,setAmount] = useState("");
   return (
     <Stack.Navigator initialRouteName="LandingScreen" >
       <Stack.Screen
@@ -48,19 +48,12 @@ const StackNavigator = () => {
       }}
       />
       <Stack.Screen name="Scan Product" component={PayScanner} />
-      <Stack.Screen name="Pay By Transfer" component={test} />
+      <Stack.Screen name="Pay By Transfer" component={transfer} />
       <Stack.Screen name="Payment" component={PayPage} />
     </Stack.Navigator>
-    // <TabNavigator/>
   );
 };
 export default function App() {
-  // const logout = async()=>{
-  //   api.defaults.headers.common["Authorization"] =`Bearer ${
-  //     JSON.parse(localStorage.getItem(""))
-  //   }
-  //   `
-  // };
   return (
     <NavigationContainer>
       <StackNavigator />
